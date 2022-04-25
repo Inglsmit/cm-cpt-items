@@ -5,7 +5,7 @@ import './editor.scss';
 export default function Edit() {
 	return (
 		<p {...useBlockProps()}>
-			{__('Boilerplate – hello from the editor!', 'boilerplate')}
+			{__('CMP CPT ITEMS – hello from the editor!', 'cm-cpt-items')}
 		</p>
 	);
 }

@@ -4,7 +4,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 export default function save() {
 	return (
 		<p {...useBlockProps.save()}>
-			{__('Boilerplate – hello from the saved content!', 'boilerplate')}
+			{__('CM CPT ITEMS – hello from the saved content!', 'cm-cpt-items')}
 		</p>
 	);
 }

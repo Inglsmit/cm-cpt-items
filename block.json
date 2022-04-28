@@ -8,6 +8,18 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"numberOfPosts": {
+			"type": "number",
+			"default": 5
+		},
+		"categories": {
+			"type": "array",
+			"items": {
+				"type": "object"
+			}
+		}
+	},
 	"textdomain": "cm-cpt-items",
 	"editorScript": "file:./build/index.js",
 	"editorStyle": "file:./build/index.css",

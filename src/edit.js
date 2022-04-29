@@ -4,12 +4,13 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import './editor.scss';
 
-export default function Edit({ attributes, setAttributes }) {
+export default function Edit() {
 
 	// const {numberOfPosts} = attributes;
 
 	const posts = useSelect((select) => {
 		return select('core').getEntityRecords('postType', 'movies', {
+			per_page: 8,
 			_embed: true,
 		});
 	}, []);
@@ -18,8 +19,15 @@ export default function Edit({ attributes, setAttributes }) {
 		<ul {...useBlockProps()}>
 			{posts &&
 				posts.map((post) => {
-					console.log(post);
+					// console.log(post);
 					console.log(post._embedded);
+					// console.log(allCats);
+					const currGenres = 
+					post._embedded && 
+					post._embedded['wp:term'] && 
+					post._embedded['wp:term'].length > 0 
+					&& post._embedded['wp:term'][0];
+					
 					const featuredImage =
 					post._embedded &&
 					post._embedded['wp:featuredmedia'] &&
@@ -47,6 +55,15 @@ export default function Edit({ attributes, setAttributes }) {
 							{post.excerpt.rendered && (
 								<RawHTML>{post.excerpt.rendered}</RawHTML>
 							)}
+							<p>
+								{currGenres &&
+									currGenres.map((cat) => {return (
+										<>
+											<span className=''>{cat.name}</span>
+										</>
+										) })
+								}
+							</p>
 						</li>
 					);
 				})}

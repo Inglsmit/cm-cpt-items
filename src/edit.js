@@ -20,7 +20,7 @@ export default function Edit() {
 			{posts &&
 				posts.map((post) => {
 					// console.log(post);
-					console.log(post._embedded);
+					// console.log(post._embedded);
 					// console.log(allCats);
 					const currGenres = 
 					post._embedded && 

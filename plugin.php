@@ -34,56 +34,70 @@ function cm_block_render_latest_posts_block($attributes) {
 	);
 
 	$latest_posts = new WP_Query($args);
-
 	ob_start();
-	if ( $latest_posts->have_posts() ):
-		while($latest_posts->have_posts() ): $latest_posts->the_post();
-			$post_id = $latest_posts->post->ID;
-			// print_r($post_id);
-			$title = get_the_title();
-			$title = $title ? $title : __('(No title)','cm-cpt-items');
-			$permalink = get_permalink( );
-			$excerpt = get_the_excerpt(  );
-			$thumb = get_the_post_thumbnail( $post_id, 'full' );
+	?>
+	<div class="wp-block-cm-block-cm-cpt-items">
+		<?php if ( $latest_posts->have_posts() ): ?>
+			<div class="wp-block-cm-block-cm-cpt-items__list">				
+				<?php
+				while($latest_posts->have_posts() ): $latest_posts->the_post();
+					$post_id = $latest_posts->post->ID;
+					// print_r($post_id);
+					$title = get_the_title();
+					$title = $title ? $title : __('(No title)','cm-cpt-items');
+					$permalink = get_permalink( );
+					$excerpt = get_the_excerpt(  );
+					$thumb = get_the_post_thumbnail( $post_id, 'full' );
 
-			$cur_terms = get_the_terms( $post_id, 'genre' );
-		?>
-			<div style="max-width: 960px; margin: 0 auto;">
-				<?php echo $thumb; ?>
-				<h2><a href="<?php echo esc_url($permalink) ?>"><?php echo $title; ?></a></h2>
-				<p><?php echo esc_html( $excerpt ) ?></p>
-				<div>
-					<?php if(is_array( $cur_terms )): ?>
-						<?php foreach( $cur_terms as $cur_term ): ?>
-							<a href="<?php echo get_term_link( $cur_term->term_id, $cur_term->taxonomy ) ?>"><i><?php echo $cur_term->name ?></i></a>
-						<?php endforeach; ?>
-					<?php endif; ?>
-				</div>
+					$cur_terms = get_the_terms( $post_id, 'genre' );
+				?>
+					<div class="wp-block-cm-block-cm-cpt-items__card">
+						<div class="wp-block-cm-block-cm-cpt-items__card-img-box">
+							<a href="<?php echo esc_url($permalink) ?>">
+								<?php echo $thumb; ?>
+							</a>
+						</div>
+						<h2 class="wp-block-cm-block-cm-cpt-items__card-title">
+							<a href="<?php echo esc_url($permalink) ?>"><?php echo $title; ?></a>
+						</h2>
+						<p class="wp-block-cm-block-cm-cpt-items__card-text"><?php echo esc_html( $excerpt ) ?></p>
+						<div class="wp-block-cm-block-cm-cpt-items__card-tags">
+							<?php if(is_array( $cur_terms )): ?>
+								<?php foreach( $cur_terms as $cur_term ): ?>
+									<a class="wp-block-cm-block-cm-cpt-items__card-tags-tag" href="<?php echo get_term_link( $cur_term->term_id, $cur_term->taxonomy ) ?>">#<?php echo $cur_term->name ?></a>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php endwhile; ?>
 			</div>
 		<?php
-		endwhile;
-
-		previous_posts_link( 'PREVIOUS PAGE' ); 
-		$links_data = kama_paginate_links_data( [
-			'total' => $latest_posts->max_num_pages,
-		] );
-
-		foreach($links_data as $item){
-			if($item->is_current == 1){
-				?>
-					<span><?php echo $item->page_num ?></span>
-		 		<?php
-		 	}else{
-		 		?>
-		 			<span><a href="<?php echo esc_url($item->url) ?>"><?php echo $item->page_num ?></a></span>
-		 		<?php
-		 	}
-		}
-		next_posts_link( 'NEXT PAGE', $latest_posts->max_num_pages );
-
 		wp_reset_postdata(); // reset
-	endif;	
-	
+		endif;	
+		?>
+			<div class="wp-block-cm-block-cm-cpt-items__paginator">
+				<?php
+				previous_posts_link( __('PREVIOUS PAGE','cm-cpt-items') ); 
+				$links_data = cm_cpt_items_paginate_links_data( [
+					'total' => $latest_posts->max_num_pages,
+				] );
+
+				foreach($links_data as $item){
+					if($item->is_current == 1){
+						?>
+							<span><?php echo $item->page_num ?></span>
+						<?php
+					}else{
+						?>
+							<span><a href="<?php echo esc_url($item->url) ?>"><?php echo $item->page_num ?></a></span>
+						<?php
+					}
+				}
+				next_posts_link( __('NEXT PAGE','cm-cpt-items'), $latest_posts->max_num_pages );
+				?>
+			</div>
+	</div>
+	<?php
 	$content = ob_get_contents();
 	ob_end_clean();
 
@@ -96,8 +110,6 @@ function cm_block_cm_cpt_items_block_init() {
 	) );
 }
 add_action( 'init', 'cm_block_cm_cpt_items_block_init' );
-
-
 
 add_action( 'init', 'cm_cpt_items_create_taxonomy' );
 function cm_cpt_items_create_taxonomy(){
@@ -157,7 +169,7 @@ add_action( 'init', 'cm_cpt_items_create_posttype', 0 );
 
 
 
-function kama_paginate_links_data( $args ){
+function cm_cpt_items_paginate_links_data( $args ){
 	global $wp_query;
 
 	$args = wp_parse_args( $args, [

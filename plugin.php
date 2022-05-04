@@ -43,10 +43,10 @@ function cm_block_render_latest_posts_block($attributes) {
 				while($latest_posts->have_posts() ): $latest_posts->the_post();
 					$post_id = $latest_posts->post->ID;
 					// print_r($post_id);
-					$title = get_the_title();
+					$title = esc_html(get_the_title());
 					$title = $title ? $title : __('(No title)','cm-cpt-items');
 					$permalink = get_permalink( );
-					$excerpt = get_the_excerpt(  );
+					$excerpt = get_the_excerpt( );
 					$thumb = get_the_post_thumbnail( $post_id, 'full' );
 
 					$cur_terms = get_the_terms( $post_id, 'genre' );
@@ -76,25 +76,31 @@ function cm_block_render_latest_posts_block($attributes) {
 		endif;	
 		?>
 			<div class="wp-block-cm-block-cm-cpt-items__paginator">
+				<span class="wp-block-cm-block-cm-cpt-items__paginator-item">
+					<?php
+					previous_posts_link( __('PREVIOUS PAGE','cm-cpt-items') ); 
+					$links_data = cm_cpt_items_paginate_links_data( [
+						'total' => $latest_posts->max_num_pages,
+					] );?>
+				</span>
 				<?php
-				previous_posts_link( __('PREVIOUS PAGE','cm-cpt-items') ); 
-				$links_data = cm_cpt_items_paginate_links_data( [
-					'total' => $latest_posts->max_num_pages,
-				] );
-
 				foreach($links_data as $item){
 					if($item->is_current == 1){
 						?>
-							<span><?php echo $item->page_num ?></span>
+							<span class="wp-block-cm-block-cm-cpt-items__paginator-item"><?php echo $item->page_num ?></span>
 						<?php
 					}else{
 						?>
-							<span><a href="<?php echo esc_url($item->url) ?>"><?php echo $item->page_num ?></a></span>
+							<span class="wp-block-cm-block-cm-cpt-items__paginator-item"><a href="<?php echo esc_url($item->url) ?>"><?php echo $item->page_num ?></a></span>
 						<?php
 					}
 				}
-				next_posts_link( __('NEXT PAGE','cm-cpt-items'), $latest_posts->max_num_pages );
 				?>
+				<span class="wp-block-cm-block-cm-cpt-items__paginator-item">
+					<?php
+					next_posts_link( __('NEXT PAGE','cm-cpt-items'), $latest_posts->max_num_pages );
+					?>
+				</span>
 			</div>
 	</div>
 	<?php

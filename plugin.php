@@ -30,7 +30,7 @@ function cm_block_render_latest_posts_block($attributes) {
 		'posts_per_page' => 8,
 		'paged' => $page,
 		'post_status' => 'publish',
-		'post_type'   => 'movies',
+		'post_type'   => 'gb_movies',
 	);
 
 	$latest_posts = new WP_Query($args);
@@ -49,7 +49,7 @@ function cm_block_render_latest_posts_block($attributes) {
 					$excerpt = get_the_excerpt( );
 					$thumb = get_the_post_thumbnail( $post_id, 'full' );
 
-					$cur_terms = get_the_terms( $post_id, 'genre' );
+					$cur_terms = get_the_terms( $post_id, 'gb_genre' );
 				?>
 					<div class="wp-block-cm-block-cm-cpt-items__card">
 						<div class="wp-block-cm-block-cm-cpt-items__card-img-box">
@@ -110,71 +110,6 @@ function cm_block_render_latest_posts_block($attributes) {
 	return $content;
 }
 
-function cm_block_cm_cpt_items_block_init() {
-	register_block_type_from_metadata( __DIR__,  array(
-		'render_callback' => 'cm_block_render_latest_posts_block'
-	) );
-}
-add_action( 'init', 'cm_block_cm_cpt_items_block_init' );
-
-add_action( 'init', 'cm_cpt_items_create_taxonomy' );
-function cm_cpt_items_create_taxonomy(){
-
-	register_taxonomy( 'genre',  'movies', [
-		'label'                 => 'Genre', 
-		'labels'                => [
-			'name'              => 'Genres',
-			'singular_name'     => 'Genre',
-			'search_items'      => 'Search Genres',
-			'all_items'         => 'All Genres',
-			'view_item '        => 'View Genre',
-			'parent_item'       => 'Parent Genre',
-			'parent_item_colon' => 'Parent Genre:',
-			'edit_item'         => 'Edit Genre',
-			'update_item'       => 'Update Genre',
-			'add_new_item'      => 'Add New Genre',
-			'new_item_name'     => 'New Genre Name',
-			'menu_name'         => 'Genre',
-			'back_to_items'     => '← Back to Genre',
-		],
-		'description'           => '', 
-		'public'                => true,
-		'hierarchical'          => false,
-
-		'rewrite' => array('slug' => 'attraction'),
-		'show_in_rest' => true,
-		'capabilities'          => array(),
-		'meta_box_cb'           => null,
-		'show_admin_column'     => false,
-		'rest_base'             => null,
-	] );
-}
-
-// Our custom post type function
-function cm_cpt_items_create_posttype() {
-  
-    register_post_type( 'movies',
-    // CPT Options
-        array(
-            'labels' => array(
-                'name' => __( 'Movies' ),
-                'singular_name' => __( 'Movie' )
-            ),
-            'public' => true,
-            'has_archive' => true,
-            'rewrite' => array('slug' => 'movies'),
-            'show_in_rest' => true,
-			'supports' => [ 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', ], 
-			'taxonomies'          => ['genre'],
-          )
-    );
-}
-// Hooking up our function to theme setup
-add_action( 'init', 'cm_cpt_items_create_posttype', 0 );
-
-
-
-
 function cm_cpt_items_paginate_links_data( $args ){
 	global $wp_query;
 
@@ -205,3 +140,10 @@ function cm_cpt_items_paginate_links_data( $args ){
 
 	return $pages;
 }
+
+function cm_block_cm_cpt_items_block_init() {
+	register_block_type_from_metadata( __DIR__,  array(
+		'render_callback' => 'cm_block_render_latest_posts_block'
+	) );
+}
+add_action( 'init', 'cm_block_cm_cpt_items_block_init' );

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
 import { useBlockProps } from '@wordpress/block-editor';
@@ -7,7 +8,7 @@ import './editor.scss';
 export default function Edit() {
 
 	const posts = useSelect((select) => {
-		return select('core').getEntityRecords('postType', 'movies', {
+		return select('core').getEntityRecords('postType', 'gb_movies', {
 			per_page: 8,
 			_embed: true,
 		});

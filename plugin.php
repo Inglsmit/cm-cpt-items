@@ -22,8 +22,6 @@
  */
 
 function cm_block_render_latest_posts_block($attributes) {
-	// global $post;
-
 	$page =  get_query_var( 'paged', 1 );
 
 	$args = array(
@@ -36,6 +34,7 @@ function cm_block_render_latest_posts_block($attributes) {
 	$latest_posts = new WP_Query($args);
 	ob_start();
 	?>
+
 	<div class="wp-block-cm-block-cm-cpt-items">
 		<?php if ( $latest_posts->have_posts() ): ?>
 			<div class="wp-block-cm-block-cm-cpt-items__list">				
@@ -64,17 +63,13 @@ function cm_block_render_latest_posts_block($attributes) {
 						<div class="wp-block-cm-block-cm-cpt-items__card-tags">
 							<?php if(is_array( $cur_terms )): ?>
 								<?php foreach( $cur_terms as $cur_term ): ?>
-									<a class="wp-block-cm-block-cm-cpt-items__card-tags-tag" href="<?php echo get_term_link( $cur_term->term_id, $cur_term->taxonomy ) ?>">#<?php echo $cur_term->name ?></a>
+									<a class="wp-block-cm-block-cm-cpt-items__card-tags-tag" href="<?php echo esc_url(get_term_link( $cur_term->term_id, $cur_term->taxonomy )) ?>">#<?php echo esc_html($cur_term->name) ?></a>
 								<?php endforeach; ?>
 							<?php endif; ?>
 						</div>
 					</div>
 				<?php endwhile; ?>
 			</div>
-		<?php
-		wp_reset_postdata(); // reset
-		endif;	
-		?>
 			<div class="wp-block-cm-block-cm-cpt-items__paginator">
 				<span class="wp-block-cm-block-cm-cpt-items__paginator-item">
 					<?php
@@ -102,6 +97,14 @@ function cm_block_render_latest_posts_block($attributes) {
 					?>
 				</span>
 			</div>
+			<?php
+		wp_reset_postdata();
+			else:
+				?>
+					<p><?php __('No movies', 'cm-cpt-items') ?></p>
+				<?php
+		endif;	
+		?>
 	</div>
 	<?php
 	$content = ob_get_contents();

@@ -1,5 +1,7 @@
-.wp-block-cm-block-cm-cpt-items{
-	&:not( .alignwide ):not( .alignfull ):not( .alignleft ):not( .alignright ):not( .wp-block-separator ):not( .woocommerce ) {
+.wp-block-cm-block-cm-cpt-items {
+
+	&:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce) {
+
 		.entry-content & {
 			width: 100%;
 			max-width: 1504px;
@@ -8,26 +10,26 @@
 		}
 	}
 
-	.wp-block-cm-block-cm-cpt-items__list{
+	.wp-block-cm-block-cm-cpt-items__list {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		column-gap: 14px;
 		justify-content: flex-start;
 
-		.wp-block-cm-block-cm-cpt-items__card{
+		.wp-block-cm-block-cm-cpt-items__card {
 			display: flex;
 			flex-direction: column;
 			width: calc((100% - 42px) / 4);
 			margin-bottom: 40px;
-			
-			&-img-box{
+
+			&-img-box {
 				overflow: hidden;
 				width: 100%;
 				height: 150px;
 				margin-bottom: 14px;
 
-				> a > img{
+				> a > img {
 					display: block;
 					width: 100% !important;
 					height: 150px !important;
@@ -35,30 +37,33 @@
 					max-width: unset !important;
 				}
 			}
-			&-title{
+
+			&-title {
 				font-size: 24px;
 				line-height: 1;
 				font-weight: 400;
 				color: #0066b3;
 				margin: 0 0 8px 0;
-				a{
+
+				a {
 					text-decoration-thickness: 1px;
 				}
 			}
-			&-text{
+
+			&-text {
 				font-size: 18px;
 				line-height: 24px;
 				margin-bottom: 14px;
 				flex-grow: 1;
 			}
 
-			&-tags{
+			&-tags {
 				text-transform: lowercase;
 				display: flex;
 				flex-direction: row;
 				column-gap: 4px;
 
-				&-tag{
+				&-tag {
 					display: inline-block;
 					text-decoration: none;
 					font-weight: 700;
@@ -66,22 +71,24 @@
 					line-height: 18px;
 					padding: 4px 8px;
 					background-color: #00aeef;
-					color: #333333;
+					color: #333;
 				}
 
 			}
 		}
 	}
 
-	&__paginator{
+	&__paginator {
 		text-align: center;
 		display: flex;
 		flex-direction: row;
 		column-gap: 6px;
 		justify-content: center;
-		&-item{
+
+		&-item {
 			display: inline-block;
-			a{
+
+			a {
 				text-decoration-thickness: 1px;
 			}
 		}

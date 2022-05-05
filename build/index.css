@@ -1,18 +1,1 @@
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/editor.scss ***!
-  \****************************************************************************************************************************************************************************************************************************************/
-.wp-block-cm-block-cm-cpt-items.wp-block[data-type="cm-block/cm-cpt-items"] {
-  width: 100%;
-  max-width: 1504px;
-  margin: 0 auto;
-  padding: 0 8px;
-}
-.wp-block-cm-block-cm-cpt-items .wp-block-cm-block-cm-cpt-items__list .wp-block-cm-block-cm-cpt-items__card-text {
-  margin-top: 0;
-}
-.wp-block-cm-block-cm-cpt-items .wp-block-cm-block-cm-cpt-items__list .wp-block-cm-block-cm-cpt-items__card-text p {
-  margin: 0;
-  line-height: 24px;
-}
-
-/*# sourceMappingURL=index.css.map*/
+.wp-block-cm-block-cm-cpt-items.wp-block[data-type="cm-block/cm-cpt-items"]{margin:0 auto;max-width:1504px;padding:0 8px;width:100%}.wp-block-cm-block-cm-cpt-items .wp-block-cm-block-cm-cpt-items__list .wp-block-cm-block-cm-cpt-items__card-text{margin-top:0}.wp-block-cm-block-cm-cpt-items .wp-block-cm-block-cm-cpt-items__list .wp-block-cm-block-cm-cpt-items__card-text p{line-height:24px;margin:0}

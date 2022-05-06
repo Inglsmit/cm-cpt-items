@@ -50,10 +50,9 @@ export default function Edit() {
 										<a href={post.link}>
 											{featuredImage && (
 												<img
+													className={ featuredImage.id ? `wp-image-${ featuredImage.id }` : null }
 													src={
-														featuredImage
-															.media_details.sizes
-															.medium.source_url
+														featuredImage.source_url
 													}
 													alt={featuredImage.alt_text}
 												/>
@@ -118,7 +117,7 @@ export default function Edit() {
 									{maxNumPages}
 								</a>
 								<a className="next page-numbers" href="#">
-									Next »
+									{__('Next »', 'gb-cpt-items')}
 								</a>
 							</div>
 						</>
@@ -145,7 +144,7 @@ export default function Edit() {
 									);
 								})}
 								<a className="next page-numbers" href="#">
-									Next »
+									{__('Next »', 'gb-cpt-items')}
 								</a>
 							</div>
 						</>
@@ -156,7 +155,8 @@ export default function Edit() {
 					{posts === null ? (
 						<Placeholder
 							icon={'admin-generic'}
-							label="Movies list is loading..."
+							// eslint-disable-next-line @wordpress/i18n-ellipsis
+							label={__('Movies list is loading...', 'gb-cpt-items')}
 						>
 							<Spinner />
 						</Placeholder>

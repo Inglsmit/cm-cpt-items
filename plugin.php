@@ -41,7 +41,6 @@ function gb_cpt_items_render_latest_posts_block($attributes) {
 				<?php
 				while($latest_posts->have_posts() ): $latest_posts->the_post();
 					$post_id = $latest_posts->post->ID;
-					// print_r($post_id);
 					$title = get_the_title();
 					$title = $title ? $title : __('(No title)','gb-cpt-items');
 					$permalink = get_permalink( );
@@ -88,12 +87,11 @@ function gb_cpt_items_render_latest_posts_block($attributes) {
 					wp_reset_postdata();
 				?>
 			</div>
-			<?php else:	?>
-				<p><?php esc_html__('Sorry, movies not found.', 'gb-cpt-items') ?></p>
-			<?php
-		endif;	
-		?>
+		<?php else:	?>
+			<p><?php echo esc_html__('Sorry, movies not found.', 'gb-cpt-items') ?></p>
+		<?php endif; ?>
 	</div>
+
 	<?php
 	$content = ob_get_contents();
 	ob_end_clean();

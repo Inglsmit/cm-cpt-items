@@ -5,20 +5,9 @@
 	"category": "widgets",
 	"icon": "smiley",
 	"description": "Dynamic block which display the most recent custom post type (CPT) items.",
+	"keywords": ["posts", "list"],
 	"supports": {
 		"html": false
-	},
-	"attributes": {
-		"numberOfPosts": {
-			"type": "number",
-			"default": 5
-		},
-		"categories": {
-			"type": "array",
-			"items": {
-				"type": "object"
-			}
-		}
 	},
 	"textdomain": "cm-cpt-items",
 	"editorScript": "file:./build/index.js",

@@ -25,7 +25,7 @@ function cm_block_render_latest_posts_block($attributes) {
 	$page =  get_query_var( 'paged', 1 );
 
 	$args = array(
-		'posts_per_page' => 8,
+		'posts_per_page' => 2,
 		'paged' => $page,
 		'post_status' => 'publish',
 		'post_type'   => 'gb_movies',
@@ -42,7 +42,7 @@ function cm_block_render_latest_posts_block($attributes) {
 				while($latest_posts->have_posts() ): $latest_posts->the_post();
 					$post_id = $latest_posts->post->ID;
 					// print_r($post_id);
-					$title = esc_html(get_the_title());
+					$title = get_the_title();
 					$title = $title ? $title : __('(No title)','cm-cpt-items');
 					$permalink = get_permalink( );
 					$excerpt = get_the_excerpt( );
@@ -52,18 +52,18 @@ function cm_block_render_latest_posts_block($attributes) {
 				?>
 					<div class="wp-block-cm-block-cm-cpt-items__card">
 						<div class="wp-block-cm-block-cm-cpt-items__card-img-box">
-							<a href="<?php echo esc_url($permalink) ?>">
+							<a href="<?php echo esc_url( $permalink ) ?>">
 								<?php echo $thumb; ?>
 							</a>
 						</div>
 						<h2 class="wp-block-cm-block-cm-cpt-items__card-title">
-							<a href="<?php echo esc_url($permalink) ?>"><?php echo $title; ?></a>
+							<a href="<?php echo esc_url( $permalink ) ?>"><?php echo esc_html( $title ) ?></a>
 						</h2>
 						<p class="wp-block-cm-block-cm-cpt-items__card-text"><?php echo esc_html( $excerpt ) ?></p>
 						<div class="wp-block-cm-block-cm-cpt-items__card-tags">
 							<?php if(is_array( $cur_terms )): ?>
 								<?php foreach( $cur_terms as $cur_term ): ?>
-									<a class="wp-block-cm-block-cm-cpt-items__card-tags-tag" href="<?php echo esc_url(get_term_link( $cur_term->term_id, $cur_term->taxonomy )) ?>">#<?php echo esc_html($cur_term->name) ?></a>
+									<a class="wp-block-cm-block-cm-cpt-items__card-tag" href="<?php echo esc_url(get_term_link( $cur_term->term_id, $cur_term->taxonomy )) ?>">#<?php echo esc_html($cur_term->name) ?></a>
 								<?php endforeach; ?>
 							<?php endif; ?>
 						</div>
@@ -71,38 +71,26 @@ function cm_block_render_latest_posts_block($attributes) {
 				<?php endwhile; ?>
 			</div>
 			<div class="wp-block-cm-block-cm-cpt-items__paginator">
-				<span class="wp-block-cm-block-cm-cpt-items__paginator-item">
-					<?php
-					previous_posts_link( __('PREVIOUS PAGE','cm-cpt-items') ); 
-					$links_data = cm_cpt_items_paginate_links_data( [
-						'total' => $latest_posts->max_num_pages,
-					] );?>
-				</span>
 				<?php
-				foreach($links_data as $item){
-					if($item->is_current == 1){
-						?>
-							<span class="wp-block-cm-block-cm-cpt-items__paginator-item"><?php echo $item->page_num ?></span>
-						<?php
-					}else{
-						?>
-							<span class="wp-block-cm-block-cm-cpt-items__paginator-item"><a href="<?php echo esc_url($item->url) ?>"><?php echo $item->page_num ?></a></span>
-						<?php
-					}
-				}
+					$big = 999999999; 
+
+					$args = array(
+						'base'    => str_replace( $big, '%#%', get_pagenum_link( $big ) ),
+						'format'  => '',
+						'current' => max( 1, get_query_var('paged') ),
+						'total'   => $latest_posts->max_num_pages,
+					);
+
+					$result = paginate_links( $args );
+
+					$result = preg_replace( '~/page/1/?([\'"])~', '', $result );
+					echo $result;
+					wp_reset_postdata();
 				?>
-				<span class="wp-block-cm-block-cm-cpt-items__paginator-item">
-					<?php
-					next_posts_link( __('NEXT PAGE','cm-cpt-items'), $latest_posts->max_num_pages );
-					?>
-				</span>
 			</div>
+			<?php else:	?>
+				<p><?php esc_html__('Sorry, movies not found.', 'cm-cpt-items') ?></p>
 			<?php
-		wp_reset_postdata();
-			else:
-				?>
-					<p><?php __('No movies', 'cm-cpt-items') ?></p>
-				<?php
 		endif;	
 		?>
 	</div>

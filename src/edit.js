@@ -3,15 +3,26 @@ import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
+import { Spinner, Placeholder } from '@wordpress/components';
 import './editor.scss';
 
 export default function Edit() {
+
+	const postsPerPage = 2;
+	const allPosts = useSelect((select) => {
+		return select('core').getEntityRecords('postType', 'gb_movies', {});
+	}, []);
+
 	const posts = useSelect((select) => {
 		return select('core').getEntityRecords('postType', 'gb_movies', {
-			per_page: 8,
+			per_page: postsPerPage,
 			_embed: true,
 		});
 	}, []);
+
+	const maxNumPages = allPosts && allPosts.length && Math.ceil(allPosts.length / postsPerPage);
+
+	console.log(maxNumPages);
 
 	return (
 		<div {...useBlockProps()}>
@@ -73,7 +84,7 @@ export default function Edit() {
 												return (
 													<>
 														<a
-															className="wp-block-cm-block-cm-cpt-items__card-tags-tag"
+															className="wp-block-cm-block-cm-cpt-items__card-tag"
 															href={cat.link}
 														>
 															#{cat.name}
@@ -86,21 +97,45 @@ export default function Edit() {
 							);
 						})}
 					</div>
-					<div className="wp-block-cm-block-cm-cpt-items__paginator">
-						<span className="wp-block-cm-block-cm-cpt-items__paginator-item">
-							1
-						</span>
-						<span className="wp-block-cm-block-cm-cpt-items__paginator-item">
-							<a href="#">2</a>
-						</span>
-						<span className="wp-block-cm-block-cm-cpt-items__paginator-item">
-							<a href="#">{__('NEXT PAGE', 'cm-cpt-items')}</a>
-						</span>
-					</div>
+
+					{maxNumPages > 4 ? (
+						<>
+							<div className="wp-block-cm-block-cm-cpt-items__paginator">
+								<span aria-current="page" className="page-numbers current">1</span>
+								<a className="page-numbers" href="#">2</a>
+								<a className="page-numbers" href="#">3</a>
+								<span className="page-numbers dots">…</span>
+								<a className="page-numbers" href="#">{maxNumPages}</a>
+								<a className="next page-numbers" href="#">Next »</a>
+							</div>
+						</>
+
+					):(
+						<>
+							<div className="wp-block-cm-block-cm-cpt-items__paginator">
+								<span aria-current="page" className="page-numbers current">1</span>
+								{
+									[...Array(maxNumPages+1)].map((e, i) => {
+										return i > 1 && <a key={i} className="page-numbers" href="#">{i}</a>
+									} )
+								}
+								<a className="next page-numbers" href="#">Next »</a>
+							</div>
+						</>
+					)}
+
 				</>
 			) : (
 				<>
-					<p>{__('No movies', 'cm-cpt-items')}</p>
+					{posts === null ? (
+						<Placeholder icon={ 'admin-generic' } label="Movies list is loading...">
+							<Spinner />
+						</Placeholder>
+					):(
+						<>
+							<p>{__('Sorry, movies not found.', 'cm-cpt-items')}</p>
+						</>
+					)}
 				</>
 			)}
 		</div>

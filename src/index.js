@@ -3,7 +3,7 @@ import './style.scss';
 import Edit from './edit';
 import save from './save';
 
-registerBlockType('cm-block/cm-cpt-items', {
+registerBlockType('cm-block/gb-cpt-items', {
 	edit: Edit,
 	save,
 });

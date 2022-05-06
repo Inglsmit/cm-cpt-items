@@ -7,7 +7,6 @@ import { Spinner, Placeholder } from '@wordpress/components';
 import './editor.scss';
 
 export default function Edit() {
-
 	const postsPerPage = 2;
 	const allPosts = useSelect((select) => {
 		return select('core').getEntityRecords('postType', 'gb_movies', {});
@@ -20,7 +19,10 @@ export default function Edit() {
 		});
 	}, []);
 
-	const maxNumPages = allPosts && allPosts.length && Math.ceil(allPosts.length / postsPerPage);
+	const maxNumPages =
+		allPosts &&
+		allPosts.length &&
+		Math.ceil(allPosts.length / postsPerPage);
 
 	console.log(maxNumPages);
 
@@ -28,7 +30,7 @@ export default function Edit() {
 		<div {...useBlockProps()}>
 			{posts && posts.length ? (
 				<>
-					<div className="wp-block-cm-block-cm-cpt-items__list">
+					<div className="wp-block-cm-block-gb-cpt-items__list">
 						{posts.map((post) => {
 							const currGenres =
 								post._embedded &&
@@ -43,10 +45,10 @@ export default function Edit() {
 								post._embedded['wp:featuredmedia'][0];
 							return (
 								<div
-									className="wp-block-cm-block-cm-cpt-items__card"
+									className="wp-block-cm-block-gb-cpt-items__card"
 									key={post.id}
 								>
-									<div className="wp-block-cm-block-cm-cpt-items__card-img-box">
+									<div className="wp-block-cm-block-gb-cpt-items__card-img-box">
 										<a href={post.link}>
 											{featuredImage && (
 												<img
@@ -60,31 +62,31 @@ export default function Edit() {
 											)}
 										</a>
 									</div>
-									<h2 className="wp-block-cm-block-cm-cpt-items__card-title">
+									<h2 className="wp-block-cm-block-gb-cpt-items__card-title">
 										<a href={post.link}>
 											{post.title.rendered ? (
 												<RawHTML>
 													{post.title.rendered}
 												</RawHTML>
 											) : (
-												__('(No title)', 'cm-cpt-items')
+												__('(No title)', 'gb-cpt-items')
 											)}
 										</a>
 									</h2>
-									<p className="wp-block-cm-block-cm-cpt-items__card-text">
+									<p className="wp-block-cm-block-gb-cpt-items__card-text">
 										{post.excerpt.rendered && (
 											<RawHTML>
 												{post.excerpt.rendered}
 											</RawHTML>
 										)}
 									</p>
-									<div className="wp-block-cm-block-cm-cpt-items__card-tags">
+									<div className="wp-block-cm-block-gb-cpt-items__card-tags">
 										{currGenres &&
 											currGenres.map((cat) => {
 												return (
 													<>
 														<a
-															className="wp-block-cm-block-cm-cpt-items__card-tag"
+															className="wp-block-cm-block-gb-cpt-items__card-tag"
 															href={cat.link}
 														>
 															#{cat.name}
@@ -100,40 +102,71 @@ export default function Edit() {
 
 					{maxNumPages > 4 ? (
 						<>
-							<div className="wp-block-cm-block-cm-cpt-items__paginator">
-								<span aria-current="page" className="page-numbers current">1</span>
-								<a className="page-numbers" href="#">2</a>
-								<a className="page-numbers" href="#">3</a>
+							<div className="wp-block-cm-block-gb-cpt-items__paginator">
+								<span
+									aria-current="page"
+									className="page-numbers current"
+								>
+									1
+								</span>
+								<a className="page-numbers" href="#">
+									2
+								</a>
+								<a className="page-numbers" href="#">
+									3
+								</a>
 								<span className="page-numbers dots">…</span>
-								<a className="page-numbers" href="#">{maxNumPages}</a>
-								<a className="next page-numbers" href="#">Next »</a>
+								<a className="page-numbers" href="#">
+									{maxNumPages}
+								</a>
+								<a className="next page-numbers" href="#">
+									Next »
+								</a>
 							</div>
 						</>
-
-					):(
+					) : (
 						<>
-							<div className="wp-block-cm-block-cm-cpt-items__paginator">
-								<span aria-current="page" className="page-numbers current">1</span>
-								{
-									[...Array(maxNumPages+1)].map((e, i) => {
-										return i > 1 && <a key={i} className="page-numbers" href="#">{i}</a>
-									} )
-								}
-								<a className="next page-numbers" href="#">Next »</a>
+							<div className="wp-block-cm-block-gb-cpt-items__paginator">
+								<span
+									aria-current="page"
+									className="page-numbers current"
+								>
+									1
+								</span>
+								{[...Array(maxNumPages + 1)].map((e, i) => {
+									return (
+										i > 1 && (
+											<a
+												key={i}
+												className="page-numbers"
+												href="#"
+											>
+												{i}
+											</a>
+										)
+									);
+								})}
+								<a className="next page-numbers" href="#">
+									Next »
+								</a>
 							</div>
 						</>
 					)}
-
 				</>
 			) : (
 				<>
 					{posts === null ? (
-						<Placeholder icon={ 'admin-generic' } label="Movies list is loading...">
+						<Placeholder
+							icon={'admin-generic'}
+							label="Movies list is loading..."
+						>
 							<Spinner />
 						</Placeholder>
-					):(
+					) : (
 						<>
-							<p>{__('Sorry, movies not found.', 'cm-cpt-items')}</p>
+							<p>
+								{__('Sorry, movies not found.', 'gb-cpt-items')}
+							</p>
 						</>
 					)}
 				</>

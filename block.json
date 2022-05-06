@@ -1,6 +1,6 @@
 {
 	"apiVersion": 2,
-	"name": "cm-block/cm-cpt-items",
+	"name": "cm-block/gb-cpt-items",
 	"title": "CM CPT items",
 	"category": "widgets",
 	"icon": "smiley",
@@ -9,7 +9,7 @@
 	"supports": {
 		"html": false
 	},
-	"textdomain": "cm-cpt-items",
+	"textdomain": "gb-cpt-items",
 	"editorScript": "file:./build/index.js",
 	"editorStyle": "file:./build/index.css",
 	"style": "file:./build/style-index.css"

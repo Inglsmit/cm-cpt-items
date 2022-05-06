@@ -1,5 +1,5 @@
 {
-	"name": "cm-cpt-items",
+	"name": "gb-cpt-items",
 	"version": "0.1.0",
 	"description": "Dynamic block which display the most recent custom post type (CPT) items.",
 	"author": "Paul Inglsmit",

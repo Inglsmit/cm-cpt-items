@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       CM CPT items
+ * Plugin Name:       GB CPT items
  * Description:       Dynamic block which display the most recent custom post type (CPT) items.
  * Requires at least: 5.7
  * Requires PHP:      7.0
@@ -8,7 +8,7 @@
  * Author:            The WordPress Contributors
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       cm-cpt-items
+ * Text Domain:       gb-cpt-items
  *
  * @package           cm-block
  */
@@ -21,7 +21,7 @@
  * @see https://developer.wordpress.org/block-editor/tutorials/block-tutorial/writing-your-first-block-type/
  */
 
-function cm_block_render_latest_posts_block($attributes) {
+function gb_cpt_items_render_latest_posts_block($attributes) {
 	$page =  get_query_var( 'paged', 1 );
 
 	$args = array(
@@ -35,42 +35,42 @@ function cm_block_render_latest_posts_block($attributes) {
 	ob_start();
 	?>
 
-	<div class="wp-block-cm-block-cm-cpt-items">
+	<div class="wp-block-cm-block-gb-cpt-items">
 		<?php if ( $latest_posts->have_posts() ): ?>
-			<div class="wp-block-cm-block-cm-cpt-items__list">				
+			<div class="wp-block-cm-block-gb-cpt-items__list">				
 				<?php
 				while($latest_posts->have_posts() ): $latest_posts->the_post();
 					$post_id = $latest_posts->post->ID;
 					// print_r($post_id);
 					$title = get_the_title();
-					$title = $title ? $title : __('(No title)','cm-cpt-items');
+					$title = $title ? $title : __('(No title)','gb-cpt-items');
 					$permalink = get_permalink( );
 					$excerpt = get_the_excerpt( );
 					$thumb = get_the_post_thumbnail( $post_id, 'full' );
 
 					$cur_terms = get_the_terms( $post_id, 'gb_genre' );
 				?>
-					<div class="wp-block-cm-block-cm-cpt-items__card">
-						<div class="wp-block-cm-block-cm-cpt-items__card-img-box">
+					<div class="wp-block-cm-block-gb-cpt-items__card">
+						<div class="wp-block-cm-block-gb-cpt-items__card-img-box">
 							<a href="<?php echo esc_url( $permalink ) ?>">
 								<?php echo $thumb; ?>
 							</a>
 						</div>
-						<h2 class="wp-block-cm-block-cm-cpt-items__card-title">
+						<h2 class="wp-block-cm-block-gb-cpt-items__card-title">
 							<a href="<?php echo esc_url( $permalink ) ?>"><?php echo esc_html( $title ) ?></a>
 						</h2>
-						<p class="wp-block-cm-block-cm-cpt-items__card-text"><?php echo esc_html( $excerpt ) ?></p>
-						<div class="wp-block-cm-block-cm-cpt-items__card-tags">
+						<p class="wp-block-cm-block-gb-cpt-items__card-text"><?php echo esc_html( $excerpt ) ?></p>
+						<div class="wp-block-cm-block-gb-cpt-items__card-tags">
 							<?php if(is_array( $cur_terms )): ?>
 								<?php foreach( $cur_terms as $cur_term ): ?>
-									<a class="wp-block-cm-block-cm-cpt-items__card-tag" href="<?php echo esc_url(get_term_link( $cur_term->term_id, $cur_term->taxonomy )) ?>">#<?php echo esc_html($cur_term->name) ?></a>
+									<a class="wp-block-cm-block-gb-cpt-items__card-tag" href="<?php echo esc_url(get_term_link( $cur_term->term_id, $cur_term->taxonomy )) ?>">#<?php echo esc_html($cur_term->name) ?></a>
 								<?php endforeach; ?>
 							<?php endif; ?>
 						</div>
 					</div>
 				<?php endwhile; ?>
 			</div>
-			<div class="wp-block-cm-block-cm-cpt-items__paginator">
+			<div class="wp-block-cm-block-gb-cpt-items__paginator">
 				<?php
 					$big = 999999999; 
 
@@ -89,7 +89,7 @@ function cm_block_render_latest_posts_block($attributes) {
 				?>
 			</div>
 			<?php else:	?>
-				<p><?php esc_html__('Sorry, movies not found.', 'cm-cpt-items') ?></p>
+				<p><?php esc_html__('Sorry, movies not found.', 'gb-cpt-items') ?></p>
 			<?php
 		endif;	
 		?>
@@ -101,40 +101,9 @@ function cm_block_render_latest_posts_block($attributes) {
 	return $content;
 }
 
-function cm_cpt_items_paginate_links_data( $args ){
-	global $wp_query;
-
-	$args = wp_parse_args( $args, [
-		'total' => $wp_query->max_num_pages ?? 1,
-		'current' => null,
-		'url_base' => '', //
-	] );
-
-	if( null === $args['current'] ){
-		$args['current'] = max( 1, get_query_var( 'paged', 1 ) );
-	}
-
-	if( ! $args['url_base'] ){
-		$args['url_base'] = str_replace( PHP_INT_MAX, '{page_num}', get_pagenum_link( PHP_INT_MAX ) );
-	}
-
-	$pages = range( 1, max( 1, (int) $args['total'] ) );
-
-	foreach( $pages as & $page ){
-		$page = (object) [
-			'is_current' => $page == $args['current'] ,
-			'page_num'   => $page,
-			'url'        => str_replace( '{page_num}', $page, $args['url_base'] ),
-		];
-	}
-	unset( $page );
-
-	return $pages;
-}
-
-function cm_block_cm_cpt_items_block_init() {
+function gb_cpt_items_block_init() {
 	register_block_type_from_metadata( __DIR__,  array(
-		'render_callback' => 'cm_block_render_latest_posts_block'
+		'render_callback' => 'gb_cpt_items_render_latest_posts_block'
 	) );
 }
-add_action( 'init', 'cm_block_cm_cpt_items_block_init' );
+add_action( 'init', 'gb_cpt_items_block_init' );

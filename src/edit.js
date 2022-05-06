@@ -7,7 +7,7 @@ import { Spinner, Placeholder } from '@wordpress/components';
 import './editor.scss';
 
 export default function Edit() {
-	const postsPerPage = 2;
+	const postsPerPage = 8;
 	const allPosts = useSelect((select) => {
 		return select('core').getEntityRecords('postType', 'gb_movies', {});
 	}, []);
@@ -23,8 +23,6 @@ export default function Edit() {
 		allPosts &&
 		allPosts.length &&
 		Math.ceil(allPosts.length / postsPerPage);
-
-	console.log(maxNumPages);
 
 	return (
 		<div {...useBlockProps()}>

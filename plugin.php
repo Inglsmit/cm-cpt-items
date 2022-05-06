@@ -25,7 +25,7 @@ function gb_cpt_items_render_latest_posts_block($attributes) {
 	$page =  get_query_var( 'paged', 1 );
 
 	$args = array(
-		'posts_per_page' => 2,
+		'posts_per_page' => 8,
 		'paged' => $page,
 		'post_status' => 'publish',
 		'post_type'   => 'gb_movies',

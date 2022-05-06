@@ -3,7 +3,7 @@
 	"name": "cm-block/gb-cpt-items",
 	"title": "CM CPT items",
 	"category": "widgets",
-	"icon": "smiley",
+	"icon": "grid-view",
 	"description": "Dynamic block which display the most recent custom post type (CPT) items.",
 	"keywords": ["posts", "list"],
 	"supports": {

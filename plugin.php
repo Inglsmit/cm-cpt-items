@@ -5,7 +5,7 @@
  * Requires at least: 5.7
  * Requires PHP:      7.0
  * Version:           0.1.0
- * Author:            The WordPress Contributors
+ * Author:            GOAT digital
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       gb-cpt-items
@@ -22,7 +22,7 @@
  */
 
 function gb_cpt_items_render_latest_posts_block($attributes) {
-	$page =  get_query_var( 'paged', 1 );
+	$page = get_query_var( 'paged', 1 );
 
 	$args = array(
 		'posts_per_page' => 8,
@@ -43,16 +43,26 @@ function gb_cpt_items_render_latest_posts_block($attributes) {
 					$post_id = $latest_posts->post->ID;
 					$title = get_the_title();
 					$title = $title ? $title : __('(No title)','gb-cpt-items');
-					$permalink = get_permalink( );
-					$excerpt = get_the_excerpt( );
+					$permalink = get_permalink();
+					$excerpt = get_the_excerpt();
 					$thumb = get_the_post_thumbnail( $post_id, 'full' );
 
 					$cur_terms = get_the_terms( $post_id, 'gb_genre' );
+					$media_meta = get_post_meta( $post_id, '_gb_sidebar_opt_media_meta', true );
 				?>
 					<div class="wp-block-cm-block-gb-cpt-items__card">
-						<div class="wp-block-cm-block-gb-cpt-items__card-img-box">
+						<div class="wp-block-cm-block-gb-cpt-items__card-img">
 							<a href="<?php echo esc_url( $permalink ) ?>">
-								<?php echo $thumb; ?>
+								<?php if( !empty($media_meta['mediaURL']) ): ?>
+									<video
+										autoPlay
+										muted
+										loop
+										src="<?php echo $media_meta['mediaURL'] ?>"
+									></video>
+								<?php else: ?>
+									<?php echo $thumb; ?>
+								<?php endif; ?>
 							</a>
 						</div>
 						<h2 class="wp-block-cm-block-gb-cpt-items__card-title">
@@ -82,13 +92,13 @@ function gb_cpt_items_render_latest_posts_block($attributes) {
 
 					$result = paginate_links( $args );
 
-					$result = preg_replace( '~/page/1/?([\'"])~', '', $result );
+					$result = preg_replace( '~page/1/~', '', $result );
 					echo $result;
 					wp_reset_postdata();
 				?>
 			</div>
 		<?php else:	?>
-			<p><?php echo esc_html__('Sorry, movies not found.', 'gb-cpt-items') ?></p>
+			<p><?php echo esc_html__( 'Sorry, movies not found.', 'gb-cpt-items' ) ?></p>
 		<?php endif; ?>
 	</div>
 

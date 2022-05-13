@@ -9,7 +9,9 @@ import './editor.scss';
 export default function Edit() {
 	const postsPerPage = 8;
 	const allPosts = useSelect((select) => {
-		return select('core').getEntityRecords('postType', 'gb_movies', {});
+		return select('core').getEntityRecords('postType', 'gb_movies', {
+			per_page: -1
+		});
 	}, []);
 
 	const posts = useSelect((select) => {
@@ -19,10 +21,12 @@ export default function Edit() {
 		});
 	}, []);
 
+	console.log(posts);
+
 	const maxNumPages =
 		allPosts &&
 		allPosts.length &&
-		Math.ceil(allPosts.length / postsPerPage);
+		Math.ceil((allPosts.length) / postsPerPage);
 
 	return (
 		<div {...useBlockProps()}>
@@ -36,6 +40,15 @@ export default function Edit() {
 								post._embedded['wp:term'].length > 0 &&
 								post._embedded['wp:term'][0];
 
+								console.log(post.meta._gb_sidebar_opt_media_meta.length)
+								console.log(post.meta._gb_sidebar_opt_media_meta.mediaURL)
+
+							const featuredVideo = 
+								post.meta &&
+								post.meta._gb_sidebar_opt_media_meta && 
+								post.meta._gb_sidebar_opt_media_meta.length !== 0 &&
+								post.meta._gb_sidebar_opt_media_meta.mediaURL;
+
 							const featuredImage =
 								post._embedded &&
 								post._embedded['wp:featuredmedia'] &&
@@ -46,17 +59,29 @@ export default function Edit() {
 									className="wp-block-cm-block-gb-cpt-items__card"
 									key={post.id}
 								>
-									<div className="wp-block-cm-block-gb-cpt-items__card-img-box">
+									<div className="wp-block-cm-block-gb-cpt-items__card-img">
 										<a href={post.link}>
-											{featuredImage && (
-												<img
-													className={ featuredImage.id ? `wp-image-${ featuredImage.id }` : null }
-													src={
-														featuredImage.source_url
-													}
-													alt={featuredImage.alt_text}
+											{ featuredVideo ? (
+												<video
+													autoPlay
+													muted
+													loop
+													className="wp-block-cm-block-hero-block__video"
+													src={featuredVideo}
 												/>
-											)}
+											) : (
+												<>
+													{featuredImage && (
+														<img
+															className={ featuredImage.id ? `wp-image-${ featuredImage.id }` : null }
+															src={
+																featuredImage.source_url
+															}
+															alt={featuredImage.alt_text}
+														/>
+													)}
+												</>
+											) }
 										</a>
 									</div>
 									<h2 className="wp-block-cm-block-gb-cpt-items__card-title">

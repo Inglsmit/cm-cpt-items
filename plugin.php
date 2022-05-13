@@ -46,8 +46,8 @@ function gb_cpt_items_render_latest_posts_block($attributes) {
 					$permalink = get_permalink();
 					$excerpt = get_the_excerpt();
 					$thumb = get_the_post_thumbnail( $post_id, 'full' );
-
 					$cur_terms = get_the_terms( $post_id, 'gb_genre' );
+
 					$media_meta = get_post_meta( $post_id, '_gb_sidebar_opt_media_meta', true );
 				?>
 					<div class="wp-block-cm-block-gb-cpt-items__card">
